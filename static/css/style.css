@@ -333,7 +333,7 @@ input:focus, select:focus, textarea:focus {
   padding: 6px 14px;
   border-bottom: 1px solid #ddd;
 }
-.v-row { display: flex; gap: 6px; margin-bottom: 4px; font-size: 12px; }
+.v-row { display: flex; gap: 2px; margin-bottom: 4px; font-size: 12px; }
 .v-row .vk { color: #555; min-width: 108px; }
 .v-row .vv { font-weight: 600; }
 
@@ -347,7 +347,7 @@ input:focus, select:focus, textarea:focus {
   border-bottom: 1px solid #ddd;
 }
 .v-room-block { margin-bottom: 10px; }
-.v-room-name { font-weight: 700; font-size: 13px; margin-bottom: 5px; }
+.v-room-name { font-weight: 400; font-size: 13px; margin-bottom: 5px; }
 .v-room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; }
 .v-room-subtotal {
   text-align: right; font-weight: 700;
