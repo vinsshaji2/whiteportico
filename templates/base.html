@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{% block title %}White Portico Thekkady{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+{% block head %}{% endblock %}
+</head>
+<body>
+
+<div class="top-bar">
+  <span>Booking Management System &nbsp;·&nbsp; White Portico Thekkady</span>
+  <nav class="top-nav">
+    <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' or request.endpoint == 'edit_booking' %}active{% endif %}">+ New Booking</a>
+    <a href="{{ url_for('bookings_list') }}" class="{% if request.endpoint == 'bookings_list' %}active{% endif %}">All Bookings</a>
+  </nav>
+</div>
+
+<div class="hotel-header">
+  {% if logo_url %}
+    <img src="{{ logo_url }}" class="hotel-logo" alt="White Portico Logo" />
+  {% else %}
+    <div class="logo-box">WP</div>
+  {% endif %}
+  <div class="hotel-info">
+    <h1>WHITE PORTICO THEKKADY</h1>
+    <p>
+      Opposite St. Mary's Syrian Church, Kulathupalam, Kumily. &nbsp;|&nbsp;
+      Phone: +91 89215 77720 &nbsp;|&nbsp;
+      <a href="http://www.whiteportico.com" target="_blank">www.whiteportico.com</a> &nbsp;|&nbsp;
+      whiteporticothekkady@gmail.com
+    </p>
+  </div>
+</div>
+
+{% block content %}{% endblock %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

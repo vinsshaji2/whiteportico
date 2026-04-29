@@ -1,0 +1,80 @@
+[
+  {
+    "reservation_no": "000001",
+    "guest_name": "Vins",
+    "phone": "+917034942438",
+    "email": "vinsshaji2@gmail.com",
+    "organisation": "",
+    "gst": "",
+    "booking_status": "Confirmed",
+    "booked_date": "2026-04-29",
+    "booked_time": "13:19",
+    "arrival_date": "2026-04-23",
+    "arrival_time": "11:00",
+    "departure_date": "2026-05-01",
+    "departure_time": "11:00",
+    "nights": 8,
+    "booking_type": "Direct",
+    "travel_agent": "",
+    "rooms": [
+      {
+        "id": "room-1",
+        "type_index": 0,
+        "type_name": "Premium AC Room",
+        "plan": "CP",
+        "adults": 2,
+        "children": 0,
+        "rate": 1400,
+        "discount": 0,
+        "extra": 0,
+        "tax": 0,
+        "night_total": 11200,
+        "nights": 8
+      }
+    ],
+    "advance": 700,
+    "grand_total": 11200,
+    "balance": 10500,
+    "saved_at": "2026-04-29 13:20:38"
+  },
+  {
+    "reservation_no": "PORTICO001",
+    "guest_name": "Vins Shaji",
+    "phone": "+497034942438",
+    "email": "vinsshaji2@gmail.com",
+    "organisation": "",
+    "with_gst": false,
+    "gst": "",
+    "booking_status": "Confirmed",
+    "booked_date": "2026-04-29",
+    "booked_time": "20:15",
+    "arrival_date": "2026-04-29",
+    "arrival_time": "11:00",
+    "departure_date": "2026-05-09",
+    "departure_time": "11:00",
+    "nights": 10,
+    "booking_type": "Direct",
+    "travel_agent": "XHORD",
+    "rooms": [
+      {
+        "id": "room-1",
+        "type_index": 0,
+        "type_name": "Dulex Room",
+        "room_count": 1,
+        "plan": "EP",
+        "adults": 2,
+        "children": 0,
+        "rate": 1400,
+        "discount": 0,
+        "extra": 0,
+        "tax": 0,
+        "night_total": 14000,
+        "nights": 10
+      }
+    ],
+    "advance": 3000,
+    "grand_total": 14000,
+    "balance": 11000,
+    "saved_at": "2026-04-29 20:19:25"
+  }
+]

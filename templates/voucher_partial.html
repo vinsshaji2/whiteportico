@@ -1,0 +1,72 @@
+<div class="v-header">
+  <div id="v-logo-area" class="{% if logo_url %}v-logo-wrap{% else %}v-logo-placeholder{% endif %}">
+    {% if logo_url %}
+      <img src="{{ logo_url }}" class="v-logo" />
+    {% else %}
+      LOGO
+    {% endif %}
+  </div>
+  <div>
+    <div class="v-hotel-name">WHITE PORTICO THEKKADY</div>
+    <div class="v-hotel-sub">
+      Opposite St. Mary's Syrian Church, Kulathupalam, Kumily.<br>
+      Phone: +91 89215 77720 &nbsp;|&nbsp; www.whiteportico.com<br>
+      Email: whiteporticothekkady@gmail.com
+      <span id="v-hotel-gst-line" style="display:none;"><br>GSTIN: <strong id="v-hotel-gst"></strong></span>
+    </div>
+  </div>
+</div>
+
+<div class="v-voucher-bar">
+  <span>Reservation No.: <strong id="v-res-no">—</strong></span>
+  <strong>BOOKING VOUCHER</strong>
+  <span>Date: <strong id="v-date">—</strong></span>
+</div>
+
+<div class="v-section">
+  <div class="v-col">
+    <div class="v-col-title">GUEST INFORMATION</div>
+    <div class="v-row"><span class="vk">Guest Name:</span><span class="vv" id="v-gname">—</span></div>
+    <div class="v-row"><span class="vk">Phone Number:</span><span class="vv" id="v-phone">—</span></div>
+    <div class="v-row"><span class="vk">Email:</span><span class="vv" id="v-email">—</span></div>
+    <div class="v-row"><span class="vk">Organisation:</span><span class="vv" id="v-org">—</span></div>
+    <div class="v-row" id="v-gst-row" style="display:none;"><span class="vk">GST:</span><span class="vv" id="v-gst">—</span></div>
+    <div class="v-row"><span class="vk">Total Rooms:</span><span class="vv" id="v-total-rooms">—</span></div>
+  </div>
+  <div class="v-col">
+    <div class="v-col-title">STAY INFORMATION</div>
+    <div class="v-row"><span class="vk">Booking Status:</span><span class="vv" id="v-status">—</span></div>
+    <div class="v-row"><span class="vk">Booked On:</span><span class="vv" id="v-booked-on">—</span></div>
+    <div class="v-row"><span class="vk">Arrival Date:</span><span class="vv" id="v-arrival">—</span></div>
+    <div class="v-row"><span class="vk">Departure Date:</span><span class="vv" id="v-departure">—</span></div>
+    <div class="v-row"><span class="vk">Night:</span><span class="vv" id="v-nights">—</span></div>
+    <div class="v-row"><span class="vk">Booking Type:</span><span class="vv" id="v-btype">—</span></div>
+    <div class="v-row"><span class="vk">Travel Agent:</span><span class="vv" id="v-agent">—</span></div>
+  </div>
+</div>
+
+<div class="v-rooms-section">
+  <div class="v-rooms-title">ROOM DETAILS</div>
+  <div id="v-rooms-list">
+    <div style="color:#aaa;font-style:italic;font-size:12px;">No rooms added yet.</div>
+  </div>
+</div>
+
+<div class="v-totals-bar">
+  <div class="v-total-cell">
+    <div>Grand Total</div>
+    <div class="vtl" id="v-grand">Rs 0.00</div>
+  </div>
+  <div class="v-total-cell">
+    <div>Total Advances</div>
+    <div class="vtl" id="v-adv">Rs 0.00</div>
+  </div>
+  <div class="v-total-cell balance">
+    <div>Est. Balance</div>
+    <div class="vtl" id="v-bal">Rs 0.00</div>
+  </div>
+</div>
+
+<div class="v-footer">
+  Thank you for choosing WHITE PORTICO THEKKADY for your stay.
+</div>

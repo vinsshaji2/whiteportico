@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Voucher #{{ booking.reservation_no }} – White Portico Thekkady{% endblock %}
+
+{% block content %}
+<div style="max-width:860px;margin:30px auto;padding:0 20px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;" class="no-print">
+    <a href="{{ url_for('bookings_list') }}" class="btn-back">← All Bookings</a>
+    <div style="display:flex;gap:10px;">
+      <a href="{{ url_for('edit_booking', reservation_no=booking.reservation_no) }}" class="btn-edit-top">✏️ Edit</a>
+      <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+    </div>
+  </div>
+
+  <div id="voucher-preview" class="voucher-standalone">
+    <div class="v-header">
+      {% if logo_url %}
+        <img src="{{ logo_url }}" class="v-logo" />
+      {% else %}
+        <div class="v-logo-placeholder">LOGO</div>
+      {% endif %}
+      <div>
+        <div class="v-hotel-name">WHITE PORTICO THEKKADY</div>
+        <div class="v-hotel-sub">
+          Opposite St. Mary's Syrian Church, Kulathupalam, Kumily.<br>
+          Phone: +91 89215 77720 &nbsp;|&nbsp; www.whiteportico.com<br>
+          Email: whiteporticothekkady@gmail.com
+          {% if booking.with_gst or booking.gst %}
+            <br>GSTIN: <strong>{{ hotel_gstin }}</strong>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="v-voucher-bar">
+      <span>Reservation No.: <strong>{{ booking.reservation_no }}</strong></span>
+      <strong>BOOKING VOUCHER</strong>
+      <span>Date: <strong>{{ booking.booked_date }}</strong></span>
+    </div>
+
+    <div class="v-section">
+      <div class="v-col">
+        <div class="v-col-title">GUEST INFORMATION</div>
+        <div class="v-row"><span class="vk">Guest Name:</span><span class="vv">{{ booking.guest_name or '—' }}</span></div>
+        <div class="v-row"><span class="vk">Phone Number:</span><span class="vv">{{ booking.phone or '—' }}</span></div>
+        <div class="v-row"><span class="vk">Email:</span><span class="vv">{{ booking.email or '—' }}</span></div>
+        <div class="v-row"><span class="vk">Organisation:</span><span class="vv">{{ booking.organisation or '—' }}</span></div>
+        {% if booking.with_gst or booking.gst %}
+        <div class="v-row"><span class="vk">GST:</span><span class="vv">{{ booking.gst or '—' }}</span></div>
+        {% endif %}
+        {% set total_rooms = namespace(value=0) %}
+        {% for room in booking.rooms %}
+          {% set total_rooms.value = total_rooms.value + (room.room_count|default(1)|int) %}
+        {% endfor %}
+        <div class="v-row"><span class="vk">Total Rooms:</span><span class="vv">{{ total_rooms.value }}</span></div>
+      </div>
+      <div class="v-col">
+        <div class="v-col-title">STAY INFORMATION</div>
+        <div class="v-row"><span class="vk">Booking Status:</span>
+          <span class="vv status-{{ booking.booking_status | lower }}">{{ booking.booking_status }}</span></div>
+        <div class="v-row"><span class="vk">Booked On:</span><span class="vv">{{ booking.booked_date }} {{ booking.booked_time }}</span></div>
+        <div class="v-row"><span class="vk">Arrival Date:</span><span class="vv">{{ booking.arrival_date }} {{ booking.arrival_time }}</span></div>
+        <div class="v-row"><span class="vk">Departure Date:</span><span class="vv">{{ booking.departure_date }} {{ booking.departure_time }}</span></div>
+        <div class="v-row"><span class="vk">Night:</span><span class="vv">{{ booking.nights }}</span></div>
+        <div class="v-row"><span class="vk">Booking Type:</span><span class="vv">{{ booking.booking_type }}</span></div>
+        <div class="v-row"><span class="vk">Travel Agent:</span><span class="vv">{{ booking.travel_agent or '—' }}</span></div>
+      </div>
+    </div>
+
+    <div class="v-rooms-section">
+      <div class="v-rooms-title">ROOM DETAILS</div>
+      {% for room in booking.rooms %}
+      <div class="v-room-block">
+        {% set room_count = room.room_count|default(1)|int %}
+        <div class="v-room-name">{{ loop.index }}. Room Type: {{ room.type_name }} x {{ room_count }} Room{{ 's' if room_count > 1 }}</div>
+        <div class="v-room-grid">
+          <div>
+            <div class="v-row"><span class="vk">Plan:</span><span class="vv">{{ room.plan or '—' }}</span></div>
+            <div class="v-row"><span class="vk">Adult:</span><span class="vv">{{ room.adults }}</span></div>
+            <div class="v-row"><span class="vk">Child:</span><span class="vv">{{ room.children }}</span></div>
+          </div>
+          <div>
+            <div class="v-row"><span class="vk">Room Rate:</span><span class="vv">{{ "%.2f"|format(room.rate|float) }}</span></div>
+            <div class="v-row"><span class="vk">Discount:</span><span class="vv">{{ "%.2f"|format(room.discount|float) }}</span></div>
+            <div class="v-row"><span class="vk">Extra Charge:</span><span class="vv">{{ "%.2f"|format(room.extra|float) }}</span></div>
+            <div class="v-row"><span class="vk">Tax:</span><span class="vv">{{ "%.2f"|format(room.tax|float) }}</span></div>
+            <div class="v-row"><span class="vk">Total/night:</span><span class="vv">{{ "%.2f"|format((room.rate|float - room.discount|float + room.extra|float + room.tax|float) * room_count) }}</span></div>
+          </div>
+        </div>
+        <div class="v-room-subtotal">
+          Total For {{ room_count }} Room{{ 's' if room_count > 1 }} For {{ booking.nights }} Night{{ 's' if booking.nights|int > 1 }}:
+          {{ "%.2f"|format(room.night_total|float) }}
+        </div>
+        {% if not loop.last %}<hr class="v-room-divider">{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="v-totals-bar">
+      <div class="v-total-cell">
+        <div>Grand Total</div>
+        <div class="vtl">Rs {{ "%.2f"|format(booking.grand_total|float) }}</div>
+      </div>
+      <div class="v-total-cell">
+        <div>Total Advances</div>
+        <div class="vtl">Rs {{ "%.2f"|format(booking.advance|float) }}</div>
+      </div>
+      <div class="v-total-cell balance">
+        <div>Est. Balance</div>
+        <div class="vtl">Rs {{ "%.2f"|format(booking.balance|float) }}</div>
+      </div>
+    </div>
+
+    <div class="v-footer">
+      Thank you for choosing WHITE PORTICO THEKKADY for your stay.
+    </div>
+  </div>
+</div>
+{% endblock %}

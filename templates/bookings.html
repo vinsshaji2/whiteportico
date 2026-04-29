@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}All Bookings – White Portico Thekkady{% endblock %}
+
+{% block content %}
+<div class="bookings-page">
+  <div class="bookings-header">
+    <div class="panel-title">All Bookings</div>
+    <a href="{{ url_for('index') }}" class="btn-primary" style="text-decoration:none;padding:10px 22px;">+ New Booking</a>
+  </div>
+
+  {% if bookings %}
+  <div class="bookings-table-wrap">
+    <table class="bookings-table">
+      <thead>
+        <tr>
+          <th>Res. No.</th>
+          <th>Guest Name</th>
+          <th>Phone</th>
+          <th>Arrival</th>
+          <th>Departure</th>
+          <th>Nights</th>
+          <th>Rooms</th>
+          <th>Grand Total</th>
+          <th>Balance</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings | sort(attribute='saved_at', reverse=True) %}
+        <tr>
+          <td><strong>#{{ b.reservation_no }}</strong></td>
+          <td>{{ b.guest_name or '—' }}</td>
+          <td>{{ b.phone or '—' }}</td>
+          <td>{{ b.arrival_date or '—' }}</td>
+          <td>{{ b.departure_date or '—' }}</td>
+          <td>{{ b.nights }}</td>
+          {% set total_rooms = namespace(value=0) %}
+          {% for room in b.rooms %}
+            {% set total_rooms.value = total_rooms.value + (room.room_count|default(1)|int) %}
+          {% endfor %}
+          <td>{{ total_rooms.value }}</td>
+          <td>Rs {{ "%.2f"|format(b.grand_total|float) }}</td>
+          <td class="{% if b.balance|float > 0 %}bal-due{% else %}bal-clear{% endif %}">
+            Rs {{ "%.2f"|format(b.balance|float) }}
+          </td>
+          <td>
+            <span class="status-badge status-{{ b.booking_status | lower }}">
+              {{ b.booking_status }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <a href="{{ url_for('view_voucher', reservation_no=b.reservation_no) }}" class="act-btn view-btn" title="View Voucher">📄</a>
+            <a href="{{ url_for('edit_booking', reservation_no=b.reservation_no) }}" class="act-btn edit-btn" title="Edit">✏️</a>
+            <form method="POST" action="{{ url_for('delete_booking', reservation_no=b.reservation_no) }}"
+                  onsubmit="return confirm('Delete booking #{{ b.reservation_no }}?');" style="display:inline;">
+              <button type="submit" class="act-btn del-btn" title="Delete">🗑</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">📋</div>
+    <p>No bookings yet.</p>
+    <a href="{{ url_for('index') }}" class="btn-primary" style="text-decoration:none;margin-top:16px;display:inline-block;">Create First Booking</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
