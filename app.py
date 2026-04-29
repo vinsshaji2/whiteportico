@@ -19,6 +19,7 @@ ROOM_TYPES = [
     {'label': 'Superior Room (with Balcony)'},
     {'label': 'Premium AC Room'},
     {'label': 'Portico Imperial AC'},
+    {'label': 'Premium MIXED Dorm'}
 ]
 
 PLAN_OPTIONS = ['EP', 'CP', 'MAP']

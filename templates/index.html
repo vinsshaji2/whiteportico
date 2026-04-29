@@ -66,28 +66,28 @@
         <input type="date" id="bookedDate"
                value="{{ edit_booking.booked_date if edit_booking else today }}" />
       </div>
+<!--      <div class="form-group">-->
+<!--        <label>Booked On (Time)</label>-->
+<!--        <input type="time" id="bookedTime"-->
+<!--               value="{{ edit_booking.booked_time if edit_booking else now_time }}" />-->
+<!--      </div>-->
       <div class="form-group">
-        <label>Booked On (Time)</label>
-        <input type="time" id="bookedTime"
-               value="{{ edit_booking.booked_time if edit_booking else now_time }}" />
-      </div>
-      <div class="form-group">
-        <label>Arrival Date</label>
+        <label>Check IN</label>
         <input type="date" id="arrivalDate"
                value="{{ edit_booking.arrival_date if edit_booking else '' }}" />
       </div>
       <div class="form-group">
-        <label>Arrival Time</label>
+        <label>Check IN Time</label>
         <input type="time" id="arrivalTime"
                value="{{ edit_booking.arrival_time if edit_booking else '11:00' }}" />
       </div>
       <div class="form-group">
-        <label>Departure Date</label>
+        <label>Check Out</label>
         <input type="date" id="departureDate"
                value="{{ edit_booking.departure_date if edit_booking else '' }}" />
       </div>
       <div class="form-group">
-        <label>Departure Time</label>
+        <label>Check Out Time</label>
         <input type="time" id="departureTime"
                value="{{ edit_booking.departure_time if edit_booking else '11:00' }}" />
       </div>
