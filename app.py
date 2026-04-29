@@ -8,7 +8,17 @@ app.secret_key = 'whiteportico-secret-2024'
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-BOOKINGS_FILE = 'bookings.json'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BUNDLED_BOOKINGS_FILE = os.path.join(BASE_DIR, 'bookings.json')
+
+
+def get_bookings_file():
+    configured_path = os.environ.get('BOOKINGS_FILE')
+    if configured_path:
+        return configured_path
+    if os.environ.get('VERCEL'):
+        return os.path.join('/tmp', 'bookings.json')
+    return BUNDLED_BOOKINGS_FILE
 
 # ── Replace with your actual GSTIN ──
 HOTEL_GSTIN = '32BEZPJ7800KIZ2'
@@ -26,14 +36,22 @@ PLAN_OPTIONS = ['EP', 'CP', 'MAP']
 
 
 def load_bookings():
-    if os.path.exists(BOOKINGS_FILE):
-        with open(BOOKINGS_FILE, 'r') as f:
+    bookings_file = get_bookings_file()
+    if os.path.exists(bookings_file):
+        with open(bookings_file, 'r') as f:
+            return json.load(f)
+    if bookings_file != BUNDLED_BOOKINGS_FILE and os.path.exists(BUNDLED_BOOKINGS_FILE):
+        with open(BUNDLED_BOOKINGS_FILE, 'r') as f:
             return json.load(f)
     return []
 
 
 def save_bookings(bookings):
-    with open(BOOKINGS_FILE, 'w') as f:
+    bookings_file = get_bookings_file()
+    bookings_dir = os.path.dirname(bookings_file)
+    if bookings_dir:
+        os.makedirs(bookings_dir, exist_ok=True)
+    with open(bookings_file, 'w') as f:
         json.dump(bookings, f, indent=2)
 
 
