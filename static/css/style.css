@@ -451,21 +451,32 @@ input:focus, select:focus, textarea:focus {
 .btn-back:hover, .btn-edit-top:hover { background: var(--forest); color: #fff; }
 
 /* ===== PRINT ===== */
+@page {
+  size: A4;
+  margin: 0;
+}
+
 @media print {
   .top-bar, .hotel-header, .form-panel,
   .preview-controls, .no-print, .actions,
   .bookings-page, nav { display: none !important; }
   .app-body { display: block !important; }
   .preview-panel {
-    padding: 0 !important;
+    padding: 8mm !important;
     max-height: none !important;
+    background: #fff !important;
   }
   #voucher-preview, .voucher-standalone {
     border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
+    width: 100% !important;
   }
-  body { background: #fff !important; }
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
 }
 
 /* ===== RESPONSIVE ===== */
