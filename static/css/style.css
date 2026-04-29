@@ -117,7 +117,7 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
-.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .form-group.full { grid-column: 1 / -1; }
 .form-check { justify-content: end; }
 .checkbox-label {
@@ -135,6 +135,8 @@ label {
   color: var(--muted);
 }
 input, select, textarea {
+  width: 100%;
+  min-width: 0;
   padding: 9px 11px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -178,17 +180,20 @@ input:focus, select:focus, textarea:focus {
 .remove-room:hover { background: rgba(192,57,43,0.1); }
 .room-grid-4 {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 8px;
 }
 .room-grid-5 {
   display: grid;
-  grid-template-columns: 2fr 0.8fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   gap: 8px;
+}
+.room-grid-5 .form-group:first-child {
+  grid-column: span 2;
 }
 .room-grid-4b {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 8px;
   margin-top: 8px;
 }
@@ -469,7 +474,6 @@ input:focus, select:focus, textarea:focus {
   .form-panel, .preview-panel { max-height: none; }
   .form-panel { border-right: none; border-bottom: 1px solid var(--border); }
   .hotel-header, .form-panel, .preview-panel, .bookings-page { padding: 20px; }
-  .room-grid-4, .room-grid-4b, .room-grid-5 { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 520px) {
@@ -479,5 +483,13 @@ input:focus, select:focus, textarea:focus {
   .bookings-header .btn-primary {
     width: 100%;
   }
-  .room-grid-4, .room-grid-4b, .room-grid-5 { grid-template-columns: 1fr; }
+  .form-grid,
+  .room-grid-4,
+  .room-grid-4b,
+  .room-grid-5 {
+    grid-template-columns: 1fr;
+  }
+  .room-grid-5 .form-group:first-child {
+    grid-column: auto;
+  }
 }
