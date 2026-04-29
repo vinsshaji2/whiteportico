@@ -110,7 +110,32 @@ def view_voucher(reservation_no):
 
 @app.route('/save_booking', methods=['POST'])
 def save_booking():
-    data = request.get_json()
+    data = request.get_json() or {}
+    arrival_date = data.get('arrival_date')
+    departure_date = data.get('departure_date')
+
+    if not arrival_date:
+        return jsonify({
+            'success': False,
+            'message': 'Check IN date is required.'
+        }), 400
+
+    if departure_date:
+        try:
+            arrival_dt = datetime.strptime(arrival_date, '%Y-%m-%d')
+            departure_dt = datetime.strptime(departure_date, '%Y-%m-%d')
+        except ValueError:
+            return jsonify({
+                'success': False,
+                'message': 'Invalid Check IN or Check Out date.'
+            }), 400
+
+        if departure_dt <= arrival_dt:
+            return jsonify({
+                'success': False,
+                'message': 'Check Out date must be after Check IN date.'
+            }), 400
+
     bookings = load_bookings()
     lookup_reservation_no = data.get('original_reservation_no') or data.get('reservation_no')
     existing_idx = next(

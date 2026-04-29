@@ -151,7 +151,33 @@ function getRooms() {
 }
 
 // ===== NIGHTS AUTO-CALC =====
+function nextDateValue(dateValue) {
+  const date = new Date(dateValue + 'T00:00:00');
+  date.setDate(date.getDate() + 1);
+  return date.toISOString().slice(0, 10);
+}
+
+function syncCheckoutAvailability() {
+  const arrival = document.getElementById('arrivalDate');
+  const departure = document.getElementById('departureDate');
+  if (!arrival || !departure) return;
+
+  if (!arrival.value) {
+    departure.value = '';
+    departure.disabled = true;
+    departure.removeAttribute('min');
+    return;
+  }
+
+  departure.disabled = false;
+  departure.min = nextDateValue(arrival.value);
+  if (departure.value && new Date(departure.value) <= new Date(arrival.value)) {
+    departure.value = '';
+  }
+}
+
 function calcNights() {
+  syncCheckoutAvailability();
   const a = document.getElementById('arrivalDate')?.value;
   const d = document.getElementById('departureDate')?.value;
   if (a && d) {
@@ -356,8 +382,41 @@ function v(id) {
   return el ? el.value : '';
 }
 
+function showSaveMessage(type, text) {
+  const msg = document.getElementById('save-msg');
+  if (!msg) return;
+  msg.className = `save-msg ${type}`;
+  msg.textContent = text;
+  msg.style.display = 'block';
+  if (type === 'success') {
+    setTimeout(() => msg.style.display = 'none', 4000);
+  }
+}
+
+function validateStayDates() {
+  const arrival = document.getElementById('arrivalDate');
+  const departure = document.getElementById('departureDate');
+
+  if (!arrival?.value) {
+    showSaveMessage('error', 'Please select Check IN date before saving.');
+    arrival?.focus();
+    return false;
+  }
+
+  if (departure?.value && new Date(departure.value) <= new Date(arrival.value)) {
+    showSaveMessage('error', 'Check Out date must be after Check IN date.');
+    departure.focus();
+    return false;
+  }
+
+  return true;
+}
+
 // ===== SAVE & GENERATE =====
 function saveAndGenerate() {
+  syncCheckoutAvailability();
+  if (!validateStayDates()) return;
+
   generateVoucher();
   const rooms = getRooms();
   const grandTotal = rooms.reduce((s, r) => s + r.night_total, 0);
@@ -396,23 +455,14 @@ function saveAndGenerate() {
   })
     .then(r => r.json())
     .then(data => {
-      const msg = document.getElementById('save-msg');
       if (data.success) {
-        msg.className = 'save-msg success';
-        msg.textContent = `✔ Booking #${data.reservation_no} saved successfully!`;
-        msg.style.display = 'block';
-        setTimeout(() => msg.style.display = 'none', 4000);
+        showSaveMessage('success', `✔ Booking #${data.reservation_no} saved successfully!`);
       } else {
-        msg.className = 'save-msg error';
-        msg.textContent = '✖ Failed to save booking.';
-        msg.style.display = 'block';
+        showSaveMessage('error', data.message || '✖ Failed to save booking.');
       }
     })
     .catch(() => {
-      const msg = document.getElementById('save-msg');
-      msg.className = 'save-msg error';
-      msg.textContent = '✖ Network error.';
-      msg.style.display = 'block';
+      showSaveMessage('error', '✖ Network error.');
     });
 }
 
@@ -429,6 +479,7 @@ function resetForm() {
   const withGst = document.getElementById('withGst');
   if (withGst) withGst.checked = false;
   toggleGstFields(true);
+  syncCheckoutAvailability();
   document.getElementById('rooms-container').innerHTML = '';
   roomCount = 0;
   recalcTotals();
@@ -454,6 +505,7 @@ document.addEventListener('change', function (e) {
 window.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('rooms-container');
   if (!container) return; // Not on index page
+  syncCheckoutAvailability();
 
   if (typeof EDIT_BOOKING !== 'undefined' && EDIT_BOOKING && EDIT_BOOKING.rooms) {
     // Editing: prefill rooms

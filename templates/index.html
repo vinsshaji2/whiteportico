@@ -74,7 +74,8 @@
       <div class="form-group">
         <label>Check IN</label>
         <input type="date" id="arrivalDate"
-               value="{{ edit_booking.arrival_date if edit_booking else '' }}" />
+               value="{{ edit_booking.arrival_date if edit_booking else '' }}"
+               required />
       </div>
       <div class="form-group">
         <label>Check IN Time</label>
@@ -84,7 +85,8 @@
       <div class="form-group">
         <label>Check Out</label>
         <input type="date" id="departureDate"
-               value="{{ edit_booking.departure_date if edit_booking else '' }}" />
+               value="{{ edit_booking.departure_date if edit_booking else '' }}"
+               {% if edit_booking and edit_booking.arrival_date %}min="{{ edit_booking.arrival_date }}"{% else %}disabled{% endif %} />
       </div>
       <div class="form-group">
         <label>Check Out Time</label>
